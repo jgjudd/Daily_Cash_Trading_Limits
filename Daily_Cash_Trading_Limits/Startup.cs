@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.EntityFrameworkCore.Sqlite;
 
 namespace Daily_Cash_Trading_Limits
 {
@@ -25,10 +26,18 @@ namespace Daily_Cash_Trading_Limits
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            SqliteServiceCollectionExtensions.AddEntityFrameworkSqlite(services).AddDbContext<DatabaseContext>();
+            SqliteServiceCollectionExtensions.AddEntityFrameworkSqlite(services).AddScoped<IBankService, BankService>();
+            SqliteServiceCollectionExtensions.AddEntityFrameworkSqlite(services).AddScoped<ITotalAssetRepository, TotalAssetRepository>();
+            SqliteServiceCollectionExtensions.AddEntityFrameworkSqlite(services).AddScoped<IDailyCalculatedLimitRepository, DailyCalculatedLimitRepository>();
+            SqliteServiceCollectionExtensions.AddEntityFrameworkSqlite(services).AddScoped<IBankNameRepository, BankNameRepository>();
+            SqliteServiceCollectionExtensions.AddEntityFrameworkSqlite(services).AddScoped<IRiskRatingRepository, RiskRatingRepository>();
+
             services.AddScoped<IBankService, BankService>();
-            services.AddScoped<ITotalAssetsRepository, TotalAssetsRepository>();
+            services.AddScoped<ITotalAssetRepository, TotalAssetRepository>();
             services.AddScoped<IDailyCalculatedLimitRepository, DailyCalculatedLimitRepository>();
-            services.AddDbContext<DatabaseContext>();
+            services.AddScoped<IBankNameRepository, BankNameRepository>();
+            services.AddScoped<IRiskRatingRepository, RiskRatingRepository>();
             services.AddControllersWithViews();
         }
 

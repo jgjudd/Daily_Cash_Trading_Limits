@@ -1,7 +1,9 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
+
 namespace Daily_Cash_Trading_Limits.Models
 {
-    public class BankTradingInfoModel
+    public class BankTradingInfo
     {
         public string BankName { get; set; }
 
@@ -9,8 +11,10 @@ namespace Daily_Cash_Trading_Limits.Models
 
         public long TotalAssets { get; set; }
 
-        public long CalculatedLimit { get; set; }
+        public long? CalculatedLimit { get; set; }
 
         public DateTime DateApplied { get; set; }
+
+        public bool Approved { get; set; }
     }
 }

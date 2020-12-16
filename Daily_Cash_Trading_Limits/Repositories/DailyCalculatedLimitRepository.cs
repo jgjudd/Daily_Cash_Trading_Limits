@@ -16,6 +16,13 @@ namespace Daily_Cash_Trading_Limits.Repositories
 
     public class DailyCalculatedLimitRepository : IDailyCalculatedLimitRepository
     {
+        //private readonly DatabaseContext _context;
+
+        //public DailyCalculatedLimitRepository(DatabaseContext context)
+        //{
+        //    _context = context;
+        //}
+
         public void Add(DailyCalculatedLimit item)
         {
             throw new NotImplementedException();
@@ -28,44 +35,59 @@ namespace Daily_Cash_Trading_Limits.Repositories
 
         public IEnumerable<DailyCalculatedLimit> GetAll()
         {
-            List<DailyCalculatedLimit> limitList = new List<DailyCalculatedLimit>()
-            {
-                new DailyCalculatedLimit()
-                {
-                    BankId = 1,
-                    Limit = 2000000
-                },
-                new DailyCalculatedLimit()
-                {
-                    BankId = 2,
-                    Limit = 2000000
-                },
-                new DailyCalculatedLimit()
-                {
-                    BankId = 3,
-                    Limit = 2000000
-                },
-                new DailyCalculatedLimit()
-                {
-                    BankId = 4,
-                    Limit = 2000000
-                },
-                new DailyCalculatedLimit()
-                {
-                    BankId = 5,
-                    Limit = 2000000
-                }
-            };
+            //using (DatabaseContext _context = new DatabaseContext())
+            //{
+            //    IEnumerable<DailyCalculatedLimit> query =
+            //            from dailyCalculatedLimit in _context.DailyCalculatedLimits.AsEnumerable()
+            //            select dailyCalculatedLimit;
+            //    return query;
+            //}
 
-            return limitList;
+            long baseLimit = 2000000;
+
+            return new List<DailyCalculatedLimit>
+                {
+                    new DailyCalculatedLimit()
+                    {
+                        BankId = 1,
+                        BaseLimit = baseLimit
+                    },
+                    new DailyCalculatedLimit()
+                    {
+                        BankId = 2,
+                        BaseLimit = baseLimit
+                    },
+                    new DailyCalculatedLimit()
+                    {
+                        BankId = 3,
+                        BaseLimit = baseLimit
+                    },
+                    new DailyCalculatedLimit()
+                    {
+                        BankId = 4,
+                        BaseLimit = baseLimit
+                    },
+                    new DailyCalculatedLimit()
+                    {
+                        BankId = 5,
+                        BaseLimit = baseLimit
+                    }
+                };
         }
 
         public DailyCalculatedLimit GetCalculatedLimit(int bankId)
         {
+            //using (DatabaseContext _context = new DatabaseContext())
+            //{
+            //    return _context.DailyCalculatedLimits.FirstOrDefault(x => x.BankId == bankId);
+            //}
+
+            long baseLimit = 2000000;
+
             return new DailyCalculatedLimit()
             {
-                BankId = bankId,
-                Limit = 2000000
+                BankId = 5,
+                BaseLimit = baseLimit
             };
         }
 

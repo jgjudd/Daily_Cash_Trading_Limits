@@ -1,49 +1,21 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
-using System.Linq;
 using Daily_Cash_Trading_Limits.Models;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Daily_Cash_Trading_Limits.Repositories
+namespace Daily_Cash_Trading_Limits.Configuration
 {
-    public interface IRiskRatingRepository
+    public class RiskRatingsConfiguration : IEntityTypeConfiguration<RiskRating>
     {
-        IEnumerable<RiskRating> GetAll();
-        RiskRating GetRiskRating(int rating);
-        void Add(RiskRating item);
-        RiskRating Update(RiskRating item);
-        void Delete(RiskRating item);
-    }
-
-    public class RiskRatingRepository : IRiskRatingRepository
-    {
-        //private readonly DatabaseContext _context;
-
-        //public RiskRatingRepository(DatabaseContext context)
-        //{
-        //    _context = context;
-        //}
-
-        public void Add(RiskRating item)
+        public void Configure(EntityTypeBuilder<RiskRating> builder)
         {
-            throw new NotImplementedException();
-        }
-
-        public void Delete(RiskRating item)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerable<RiskRating> GetAll()
-        {
-            //using (DatabaseContext _context = new DatabaseContext())
-            //{
-            //    IEnumerable<RiskRating> query =
-            //        from riskRating in _context.RiskRatings.AsEnumerable()
-            //        select riskRating;
-            //    return query;
-            //}
-
-            return new List<RiskRating>
+            builder.ToTable("RiskRatings");
+            builder.Property(s => s.Rating)
+                .IsRequired(true);
+            builder.HasData
+            (
+                new List<RiskRating>
                 {
                     new RiskRating()
                     {
@@ -125,26 +97,8 @@ namespace Daily_Cash_Trading_Limits.Repositories
                         Rating = 10,
                         EffectOnLimit = 0.13
                     }
-                };
-        }
-
-        public RiskRating GetRiskRating(int rating)
-        {
-            //using (DatabaseContext _context = new DatabaseContext())
-            //{
-            //    return _context.RiskRatings.FirstOrDefault(x => x.Rating == rating);
-            //}
-
-            return new RiskRating()
-            {
-                Rating = rating,
-                EffectOnLimit = 0.13
-            };
-        }
-
-        public RiskRating Update(RiskRating item)
-        {
-            throw new NotImplementedException();
+                }
+            );
         }
     }
 }

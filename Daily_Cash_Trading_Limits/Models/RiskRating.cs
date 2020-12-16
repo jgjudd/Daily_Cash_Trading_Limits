@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Daily_Cash_Trading_Limits.Models
 {
-    [Table("RiskRating")]
+    [Table("RiskRatings")]
     public class RiskRating
     {
         [Key]

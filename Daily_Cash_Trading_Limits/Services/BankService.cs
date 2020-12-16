@@ -9,158 +9,100 @@ namespace Daily_Cash_Trading_Limits.Services
 {
     public interface IBankService
     {
-        List<BankTradingInfoModel> GetAllBanksInfo();
-        BankTradingInfoModel GetBankInfo(int bankId);
+        List<BankTradingInfo> GetAllBanksTradingInfo();
+        BankTradingInfo GetBankTradingInfo(int bankId);
     }
 
     public class BankService : IBankService
     {
-        private readonly ITotalAssetsRepository _totalAssetsRepo;
+        private readonly ITotalAssetRepository _totalAssetRepo;
         private readonly IDailyCalculatedLimitRepository _dailyCalculatedLimitRepo;
+        private readonly IBankNameRepository _bankNameRepo;
+        private readonly IRiskRatingRepository _riskRatingRepo;
 
         public BankService(
-            ITotalAssetsRepository totalAssetsRepo,
-            IDailyCalculatedLimitRepository dailyCalculatedLimitRepo)
+            ITotalAssetRepository totalAssetRepo,
+            IDailyCalculatedLimitRepository dailyCalculatedLimitRepo,
+            IBankNameRepository bankNameRepo,
+            IRiskRatingRepository riskRatingRepo)
         {
-            _totalAssetsRepo = totalAssetsRepo;
+            _totalAssetRepo = totalAssetRepo;
             _dailyCalculatedLimitRepo = dailyCalculatedLimitRepo;
+            _bankNameRepo = bankNameRepo;
+            _riskRatingRepo =riskRatingRepo;
         }
 
-
-        public List<BankTradingInfoModel> GetAllBanksInfo()
+        public long CalculateLimit(int rating, long totalAssets)
         {
-            List<TotalAssets> totalAssetsQuery = _totalAssetsRepo.GetAll().ToList();
-            List<DailyCalculatedLimit> ratingQuery = _dailyCalculatedLimitRepo.GetAll().ToList();
-
-            List<BankTradingInfoModel> bankTradingInfoList = totalAssetsQuery.Select(x => new BankTradingInfoModel()
+            using (DatabaseContext context = new DatabaseContext())
             {
-                BankName = x.BankName,
-                Rating = x.Rating,
-                TotalAssets = x.Assets,
-                DateApplied = x.DateApplied,
-                CalculatedLimit = ratingQuery 
-                                    .Where(y => x.BankId == y.BankId)
-                                    .Select(y => y.Limit)
-                                    .FirstOrDefault()
-            }).ToList();
+                long baseLimit = 2000000;
+                RiskRating riskRatingQuery = _riskRatingRepo.GetRiskRating(rating);
 
-            return bankTradingInfoList;
+                long limit = (long)((riskRatingQuery.EffectOnLimit * baseLimit) + baseLimit);
+
+                if (totalAssets > 3000000)
+                {
+                    return (long)(limit + (limit * 0.23));
+                }
+
+                return limit;
+            }
         }
 
-        public BankTradingInfoModel GetBankInfo(int bankId)
+        public List<BankTradingInfo> GetAllBanksTradingInfo()
         {
-            TotalAssets totalAssetsQuery = _totalAssetsRepo.GetLimit(bankId);
-            DailyCalculatedLimit ratingQuery = _dailyCalculatedLimitRepo.GetCalculatedLimit(bankId);
 
-            return new BankTradingInfoModel()
+                List<TotalAsset> totalAssetsQuery = _totalAssetRepo.GetAll().ToList();
+                List<DailyCalculatedLimit> ratingQuery = _dailyCalculatedLimitRepo.GetAll().ToList();
+                List<BankName> bankListQuery = _bankNameRepo.GetAll().ToList();
+
+
+                List<BankTradingInfo> bankTradingInfoList = totalAssetsQuery.Select(x => new BankTradingInfo()
+                {
+                    BankName = x.BankName,
+                    Rating = x.Rating,
+                    TotalAssets = x.Assets,
+                    DateApplied = x.DateApplied,
+                    CalculatedLimit = null,
+                    Approved = bankListQuery
+                                        .Where(z => x.BankId == z.BankId)
+                                        .Select(z => z.Approved)
+                                        .FirstOrDefault()
+                }).ToList();
+
+
+
+                foreach (BankTradingInfo item in bankTradingInfoList)
+                {
+                    item.CalculatedLimit = CalculateLimit(item.Rating, item.TotalAssets);
+                }
+
+                return bankTradingInfoList;
+            
+
+            
+        }
+
+        public BankTradingInfo GetBankTradingInfo(int bankId)
+        {
+            TotalAsset totalAssetsQuery = _totalAssetRepo.GetTotalAssetsInfo(bankId);
+            DailyCalculatedLimit ratingQuery = _dailyCalculatedLimitRepo.GetCalculatedLimit(bankId);
+            BankName bankInfo = _bankNameRepo.GetBank(bankId);
+
+            BankTradingInfo info = new BankTradingInfo()
             {
                 BankName = totalAssetsQuery.BankName,
                 Rating = totalAssetsQuery.Rating,
                 TotalAssets = totalAssetsQuery.Assets,
                 DateApplied = totalAssetsQuery.DateApplied,
-                CalculatedLimit = ratingQuery.Limit
+                CalculatedLimit = null,
+                Approved = bankInfo.Approved
             };
+
+            info.CalculatedLimit = CalculateLimit(info.Rating, info.TotalAssets);
+
+            return info;
         }
     }
 }
-
-/*
-
-    public class BankTradingInfoModel
-    {
-        public string bankName { get; set; }
-
-        public int rating { get; set; }
-
-        public long totalAssets { get; set; }
-
-        public long calculatedLimit { get; set; }
-
-        public DateTime date { get; set; }
-    }
-
-    [Table("TotalAssets")]
-    public class TotalAssets
-    {
-        [ForeignKey("BankName")]
-        public int bankId { get; set; }
-
-        public string bankName { get; set; }
-
-        [ForeignKey("RiskRating")]
-        public int rating { get; set; }
-
-        public long totalAssets { get; set; }
-
-        public DateTime date { get; set; }
-    }
-
-    [Table("RiskRating")]
-    public class RiskRating
-    {
-        [Key]
-        public int riskRating { get; set; }
-
-        public double effectOnLimit { get; set; }
-    }
-
-
- */
-
-//FinancialStats stats = new FinancialStats();
-//var foodSold = _foodRepo.GetAllSold();
-//var ticketsSold = _ticketRepo.GetAllSold();
-
-////Calculate Average Stats
-//stats.AverageTicketProfit =
-//ticketsSold.Sum(x => x.Profit) / ticketsSold.Sum(x => x.Quantity);
-//stats.AverageFoodItemProfit =
-//foodSold.Sum(x => x.Profit) / foodSold.Sum(x => x.Quantity);
-
-//return stats;
-
-/*
- var q=(from pd in dataContext.tblProducts 
-     join od in dataContext.tblOrders on pd.ProductID equals od.ProductID 
-     orderby od.OrderID 
-     select new { 
-     od.OrderID,
-     pd.ProductID,
-     pd.Name,
-     pd.UnitPrice,
-     od.Quantity,
-     od.Price,
-     }).ToList(); 
- */
-
-/*
-    var results = from x in context.MyEntities 
-      select new Customer() 
-      { 
-        CustomerID = x.CustomerID, 
-        FirstName = x.FirstName, 
-        LastName = x.LastName, 
-        Gender = x.Gender, 
-        BirthMonth = x.BirthMonth,
-        TotalPurchases = context.PurchaseOrders
-                                .Where(po=>po.CustomerId == x.CustomerId)
-                                
-
-      };
- */
-
-/*
-
-    public class BankTradingInfoModel
-    {
-        public string bankName { get; set; }
-
-        public int rating { get; set; }
-
-        public long totalAssets { get; set; }
-
-        public long calculatedLimit { get; set; }
-
-        public DateTime date { get; set; }
-    }
- */

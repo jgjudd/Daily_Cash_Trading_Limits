@@ -2,11 +2,10 @@
     ViewData["Title"] = "Home Page";
 }
 
-@model IList<Daily_Cash_Trading_Limits.Models.BankTradingInfoModel>;
+@model IList<Daily_Cash_Trading_Limits.Models.BankTradingInfo>;
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1 class="display-4">Daily Trading Limits</h1>
 </div>
 
 <div class="text-center">
@@ -23,32 +22,21 @@
         <tbody>
             @if (Model != null)
             {
-                foreach (BankTradingInfoModel bank in Model)
+                foreach (BankTradingInfo bank in Model)
                 {
-                    <tr>
-                        <td>@bank.BankName</td>
-                        <td>@bank.Rating</td>
-                        <td>@bank.TotalAssets</td>
-                        <td>@bank.CalculatedLimit</td>
-                        <td>@bank.DateApplied</td>
-                    </tr>
+                    if (bank.Approved == true)
+                    {
+                        <tr class="table__row">
+                            <td>@bank.BankName</td>
+                            <td>@bank.Rating</td>
+                            <td>@bank.TotalAssets</td>
+                            <td>@bank.CalculatedLimit</td>
+                            <td>@bank.DateApplied</td>
+                        </tr>
+                    }
                 }
             }
         </tbody>
     </table>
 </div>
 
-<!--
-    public class BankTradingInfoModel
-    {
-        public string bankName { get; set; }
-
-        public int rating { get; set; }
-
-        public long totalAssets { get; set; }
-
-        public long calculatedLimit { get; set; }
-
-        public DateTime date { get; set; }
-    }
--->

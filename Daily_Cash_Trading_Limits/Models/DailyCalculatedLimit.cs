@@ -4,12 +4,12 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Daily_Cash_Trading_Limits.Models
 {
-    [Table("DailyCalculatedLimit")]
+    [Table("DailyCalculatedLimits")]
     public class DailyCalculatedLimit
     {
-        [ForeignKey("BankName")]
+        [Key]
         public int BankId { get; set; }        
 
-        public long Limit { get; set; }
+        public long BaseLimit { get; set; }
     }
 }

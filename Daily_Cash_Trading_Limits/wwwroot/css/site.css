@@ -82,3 +82,7 @@ body {
 .table {
     margin: 0 auto;
 }
+
+.table tbody.table__row:hover {
+    background-color: lightgrey;
+}

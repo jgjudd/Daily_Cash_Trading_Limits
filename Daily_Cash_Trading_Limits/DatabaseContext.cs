@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Daily_Cash_Trading_Limits.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -6,11 +7,13 @@ namespace Daily_Cash_Trading_Limits
 {
     public class DatabaseContext : DbContext
     {
+        //public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options) { }
+
         public DbSet<BankName> BankNames { get; set; }
 
         public DbSet<RiskRating> RiskRatings { get; set; }
 
-        public DbSet<TotalAssets> TotalAssets { get; set; }
+        public DbSet<TotalAsset> TotalAssets { get; set; }
 
         public DbSet<DailyCalculatedLimit> DailyCalculatedLimits { get; set; }
 
