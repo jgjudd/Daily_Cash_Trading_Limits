@@ -6,21 +6,28 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Daily_Cash_Trading_Limits.Models;
+using Daily_Cash_Trading_Limits.Services;
 
 namespace Daily_Cash_Trading_Limits.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly IBankService _bankService;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, IBankService bankService)
         {
             _logger = logger;
+            _bankService = bankService;
         }
 
         public IActionResult Index()
         {
-            return View();
+            // call service and store results
+            IEnumerable<BankTradingInfoModel> viewModel = _bankService.GetAllBanksInfo();
+                //  change back to List<BankTradingInfoModel> if IEnumerable becomes a problem
+            // return results with view >>> return View(results);
+            return View(viewModel);
         }
 
         public IActionResult Privacy()
