@@ -85,6 +85,46 @@ namespace Daily_Cash_Trading_Limits.Repositories
                         Rating = 5,
                         Assets = 5000000,
                         DateApplied = System.DateTime.Now
+                    },
+                                        new TotalAsset()
+                    {
+                        BankId = 6,
+                        BankName = "Bank 6",
+                        Rating = 6,
+                        Assets = 6000000,
+                        DateApplied = System.DateTime.Now
+                    },
+                    new TotalAsset()
+                    {
+                        BankId = 7,
+                        BankName = "Bank 7",
+                        Rating = 7,
+                        Assets = 7000000,
+                        DateApplied = System.DateTime.Now
+                    },
+                    new TotalAsset()
+                    {
+                        BankId = 8,
+                        BankName = "Bank 8",
+                        Rating = 3,
+                        Assets = 2000000,
+                        DateApplied = System.DateTime.Now
+                    },
+                    new TotalAsset()
+                    {
+                        BankId = 9,
+                        BankName = "Bank 9",
+                        Rating = -4,
+                        Assets = 4000000,
+                        DateApplied = System.DateTime.Now
+                    },
+                    new TotalAsset()
+                    {
+                        BankId = 10,
+                        BankName = "Bank 10",
+                        Rating = -5,
+                        Assets = 5000000,
+                        DateApplied = System.DateTime.Now
                     }
                 };
         }

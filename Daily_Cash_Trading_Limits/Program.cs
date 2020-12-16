@@ -13,7 +13,10 @@ namespace Daily_Cash_Trading_Limits
     {
         public static void Main(string[] args)
         {
-            CreateHostBuilder(args).Build().MigrateDatabase().Run();
+            CreateHostBuilder(args)
+                .Build()
+                // .MigrateDatabase() -- this is the one i added 
+                .Run();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>

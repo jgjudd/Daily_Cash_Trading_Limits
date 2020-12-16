@@ -24,7 +24,7 @@ namespace Daily_Cash_Trading_Limits.Controllers
         public IActionResult Index()
         {
                 // call service and store results
-                IEnumerable<BankTradingInfo> viewModel = _bankService.GetAllBanksTradingInfoAsync();
+                IEnumerable<BankTradingInfo> viewModel = _bankService.GetAllBanksTradingInfo();
                 //  change back to List<BankTradingInfoModel> if IEnumerable becomes a problem
                 // return results with view >>> return View(results);
                 return View(viewModel);

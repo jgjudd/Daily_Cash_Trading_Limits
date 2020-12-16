@@ -46,6 +46,36 @@ namespace Daily_Cash_Trading_Limits.Configuration
                         BankId = 5,
                         Name = "Bank 5",
                         Approved = true
+                    },
+                    new BankName()
+                    {
+                        BankId = 6,
+                        Name = "Bank 6",
+                        Approved = true
+                    },
+                    new BankName()
+                    {
+                        BankId = 7,
+                        Name = "Bank 7",
+                        Approved = true
+                    },
+                    new BankName()
+                    {
+                        BankId = 8,
+                        Name = "Bank 8",
+                        Approved = false
+                    },
+                    new BankName()
+                    {
+                        BankId = 9,
+                        Name = "Bank 9",
+                        Approved = true
+                    },
+                    new BankName()
+                    {
+                        BankId = 10,
+                        Name = "Bank 10",
+                        Approved = true
                     }
                 }
             ); 

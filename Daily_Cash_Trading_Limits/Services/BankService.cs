@@ -34,8 +34,6 @@ namespace Daily_Cash_Trading_Limits.Services
 
         public long CalculateLimit(int rating, long totalAssets)
         {
-            using (DatabaseContext context = new DatabaseContext())
-            {
                 long baseLimit = 2000000;
                 RiskRating riskRatingQuery = _riskRatingRepo.GetRiskRating(rating);
 
@@ -47,15 +45,14 @@ namespace Daily_Cash_Trading_Limits.Services
                 }
 
                 return limit;
-            }
         }
 
         public List<BankTradingInfo> GetAllBanksTradingInfo()
         {
 
-                List<TotalAsset> totalAssetsQuery = _totalAssetRepo.GetAll().ToList();
-                List<DailyCalculatedLimit> ratingQuery = _dailyCalculatedLimitRepo.GetAll().ToList();
-                List<BankName> bankListQuery = _bankNameRepo.GetAll().ToList();
+                var totalAssetsQuery = _totalAssetRepo.GetAll().ToList();
+                var ratingQuery = _dailyCalculatedLimitRepo.GetAll().ToList();
+                var bankListQuery = _bankNameRepo.GetAll().ToList();
 
 
                 List<BankTradingInfo> bankTradingInfoList = totalAssetsQuery.Select(x => new BankTradingInfo()

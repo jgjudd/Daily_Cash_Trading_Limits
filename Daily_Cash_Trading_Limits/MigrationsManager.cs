@@ -17,10 +17,6 @@ namespace Daily_Cash_Trading_Limits
                     try
                     {
                         dataContext.Database.Migrate();
-                        dataContext.TotalAssets.AsQueryable();
-                        dataContext.RiskRatings.AsQueryable();
-                        dataContext.DailyCalculatedLimits.AsQueryable();
-                        dataContext.BankNames.AsQueryable();
                     }
                     catch (Exception ex)
                     {

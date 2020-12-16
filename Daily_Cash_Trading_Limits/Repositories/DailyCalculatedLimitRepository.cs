@@ -71,7 +71,32 @@ namespace Daily_Cash_Trading_Limits.Repositories
                     {
                         BankId = 5,
                         BaseLimit = baseLimit
-                    }
+                    },
+                    new DailyCalculatedLimit()
+                    {
+                        BankId = 6,
+                        BaseLimit = baseLimit
+                    },
+                    new DailyCalculatedLimit()
+                    {
+                        BankId = 2=7,
+                        BaseLimit = baseLimit
+                    },
+                    new DailyCalculatedLimit()
+                    {
+                        BankId = 8,
+                        BaseLimit = baseLimit
+                    },
+                    new DailyCalculatedLimit()
+                    {
+                        BankId = 9,
+                        BaseLimit = baseLimit
+                    },
+                    new DailyCalculatedLimit()
+                    {
+                        BankId = 10,
+                        BaseLimit = baseLimit
+                    },
                 };
         }
 
